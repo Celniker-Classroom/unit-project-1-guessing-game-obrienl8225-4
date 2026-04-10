@@ -47,14 +47,26 @@ guessCount = 0
 document.getElementById("guessBtn").addEventListener("click", function() {
     let guess = parseInt(document.getElementById("guess").value);
     guessCount++;
+    let diff = Math.abs(guess - answer);
+let temp = "";
+
 
     if (guess > answer) {
+        if (diff <= 2) temp = "hot";
+        else if (diff <= 5) temp = "warm";
+        else temp = "cold";
+
         document.getElementById("msg").textContent = 
-        playerName + " , too high";
+        playerName + " , too high" + temp;
     }
     else if (guess < answer) {
+              if (diff <= 2) temp = "hot";
+        else if (diff <= 5) temp = "warm";
+        else temp = "cold";
+
         document.getElementById("msg").textContent =
-        playerName + " , too low";
+        playerName + " , too low" + temp;
+     
 
     }
     else {
