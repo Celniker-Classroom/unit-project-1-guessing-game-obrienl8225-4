@@ -17,6 +17,38 @@ if (playerName === null || playerName.trim() === "") {
     playerName = playerName.charAt(0).toUpperCase() + playerName.slice(1).toLowerCase();
 }
 
+// Function to get day suffix (st, nd, rd, th)
+function getDaySuffix(day) {
+    if (day > 3 && day < 21) return 'th';
+    switch (day % 10) {
+        case 1: return 'st';
+        case 2: return 'nd';
+        case 3: return 'rd';
+        default: return 'th';
+    }
+}
+
+// Function to update date and time every second
+function updateDateTime() {
+    let now = new Date();
+    
+    let monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"];
+    let month = monthNames[now.getMonth()];
+    let day = now.getDate();
+    let year = now.getFullYear();
+    let suffix = getDaySuffix(day);
+    
+    let dateString = month + " " + day + suffix + ", " + year;
+    document.getElementById("date").textContent = dateString;
+}
+
+// Initial date update
+updateDateTime();
+
+// Update date every second
+setInterval(updateDateTime, 1000);
+
 // timer function
 function updateTimers() {
 
@@ -104,10 +136,10 @@ document.getElementById("guessBtn").addEventListener("click", function() {
             return a - b;
         });
 
-        document.getElementById("wins").textContent = totalWins;
+        document.getElementById("wins").textContent = "Total wins: " + totalWins;
 
-        let avg = totalGuesses / totalWins;
-        document.getElementById("avgScore").textContent = avg.toFixed(0);
+        let avgScore = totalGuesses / totalWins;
+        document.getElementById("avgScore").textContent = "Average Score: " + avgScore.toFixed(0);
 
         let list = document.getElementsByName("leaderboard");
 
@@ -138,20 +170,18 @@ document.getElementById("giveUpBtn").addEventListener("click", function() {
     document.getElementById("msg").textContent =
         playerName + ", you gave up";
 
-    guessCount = range;
-
     totalWins++;
-    totalGuesses += guessCount;
+    totalGuesses += range;
 
     scores.push(range);
     scores.sort(function(a, b) {
         return a - b;
     });
 
-    document.getElementById("wins").textContent = totalWins;
+    document.getElementById("wins").textContent = "Total wins: " + totalWins;
 
-    let avg = totalGuesses / totalWins;
-    document.getElementById("avgScore").textContent = avg.toFixed(0);
+    let avgScore = totalGuesses / totalWins;
+    document.getElementById("avgScore").textContent = "Average Score: " + avgScore.toFixed(0);
 
     let list = document.getElementsByName("leaderboard");
 
@@ -164,29 +194,13 @@ document.getElementById("giveUpBtn").addEventListener("click", function() {
     }
 
     document.getElementById("guessBtn").disabled = true;
-    updateTimers();
-
-    function time() {
-        let now = new Date();
-        
-        let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-        let month = months[now.getMonth()];
-        let day = now.getDate();
-        let year = now.getFullYear();
-        
-        let hours = now.getHours();
-        let minutes = now.getMinutes();
-        let seconds = now.getSeconds();
-        
-        if (minutes < 10) {
-            minutes = "0" + minutes;
-        }
-        if (seconds < 10) {
-            seconds = "0" + seconds;
-        }
-        
-        let timeString = month + " " + day + ", " + year + " " + hours + ":" + minutes + ":" + seconds;
-        
-        document.getElementById("time").textContent = timeString;
+    document.getElementById("giveUpBtn").disabled = true;
+    document.getElementById("playBtn").disabled = false;
+    
+    // Re-enable all radio buttons for next round
+    for (let i = 0; i < radios.length; i++) {
+        radios[i].disabled = false;
     }
+    
+    updateTimers();
 });
