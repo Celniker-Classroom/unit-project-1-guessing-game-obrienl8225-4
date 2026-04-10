@@ -2,9 +2,16 @@
 <html>
   <head>
     <title>JavaScript Number Guessing Game</title>
+    <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
   </head>
   <body>
+    <div class="theme-toggle-container">
+      <label class="theme-switch" for="themeToggle">
+        <input type="checkbox" id="themeToggle">
+        <span class="slider"></span>
+      </label>
+    </div>
     <p id="date"></p>
 
     <h3>Level</h3>
@@ -21,6 +28,7 @@
 
     <h3>Stats</h3>
     <p id="wins">Total wins: 0</p>
+    <p id="winPercentage">Win Percentage: 0%</p>
     <p id="avgScore">Average Score: </p>
     <p id="fastest">Fastest Game: </p>
     <p id="avgTime">Average Time: </p>

@@ -1,8 +1,36 @@
+// Dark Mode Toggle
+function initThemeToggle() {
+    const themeToggle = document.getElementById('themeToggle');
+    const html = document.documentElement;
+    
+    // Check for saved theme preference or default to light mode
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    if (savedTheme === 'dark') {
+        html.classList.add('dark-mode');
+        themeToggle.checked = true;
+    }
+    
+    themeToggle.addEventListener('change', () => {
+        const isDarkMode = themeToggle.checked;
+        if (isDarkMode) {
+            html.classList.add('dark-mode');
+            localStorage.setItem('theme', 'dark');
+        } else {
+            html.classList.remove('dark-mode');
+            localStorage.setItem('theme', 'light');
+        }
+    });
+}
+
+// Initialize theme on page load
+initThemeToggle();
+
 // add javascript here
 
 let answer = 0;
 let guessCount = 0;
 let totalWins = 0;
+let totalGames = 0;
 let totalGuesses = 0;
 let scores = [];
 
@@ -56,6 +84,37 @@ updateDateTime();
 // Update date every second
 setInterval(updateDateTime, 1000);
 
+// Fireworks function
+function createFireworks() {
+    const fireworksContainer = document.createElement('div');
+    fireworksContainer.className = 'fireworks-container';
+    document.body.appendChild(fireworksContainer);
+
+    const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f9ca24', '#6c5ce7', '#a29bfe', '#fd79a8'];
+    
+    for (let i = 0; i < 50; i++) {
+        const firework = document.createElement('span');
+        firework.className = 'firework';
+        firework.style.left = '50%';
+        firework.style.top = '50%';
+        firework.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        
+        const angle = (Math.PI * 2 * i) / 50;
+        const velocity = 8 + Math.random() * 4;
+        const tx = Math.cos(angle) * velocity * 50;
+        const ty = Math.sin(angle) * velocity * 50;
+        
+        firework.style.setProperty('--tx', tx + 'px');
+        firework.style.setProperty('--ty', ty + 'px');
+        
+        fireworksContainer.appendChild(firework);
+    }
+
+    setTimeout(() => {
+        fireworksContainer.remove();
+    }, 1000);
+}
+
 // timer function
 function updateTimers() {
 
@@ -77,6 +136,14 @@ function updateTimers() {
     document.getElementById("avgTime").textContent = avgTime.toFixed(2);
 }
 
+// Function to update win percentage
+function updateWinPercentage() {
+    if (totalGames > 0) {
+        const percentage = (totalWins / totalGames) * 100;
+        document.getElementById("winPercentage").textContent = "Win Percentage: " + percentage.toFixed(1) + "%";
+    }
+}
+
 // play
 document.getElementById("playBtn").addEventListener("click", function() {
 
@@ -84,6 +151,7 @@ document.getElementById("playBtn").addEventListener("click", function() {
     let range = 3;
 
     guessCount = 0;
+    totalGames++;
 
     for (let i = 0; i < radios.length; i++) {
         if (radios[i].checked) {
@@ -130,6 +198,8 @@ document.getElementById("guessBtn").addEventListener("click", function() {
 
     } else {
 
+        createFireworks();
+
         document.getElementById("msg").textContent =
             playerName + ", correct";
 
@@ -144,6 +214,7 @@ document.getElementById("guessBtn").addEventListener("click", function() {
         });
 
         document.getElementById("wins").textContent = "Total wins: " + totalWins;
+        updateWinPercentage();
 
         let avgScore = totalGuesses / totalWins;
         document.getElementById("avgScore").textContent = "Average Score: " + avgScore.toFixed(0);
