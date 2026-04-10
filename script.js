@@ -3,6 +3,8 @@ function initThemeToggle() {
     const themeToggle = document.getElementById('themeToggle');
     const html = document.documentElement;
     
+    if (!themeToggle) return; // Element not found, skip
+    
     // Check for saved theme preference or default to light mode
     const savedTheme = localStorage.getItem('theme') || 'light';
     if (savedTheme === 'dark') {
@@ -23,7 +25,11 @@ function initThemeToggle() {
 }
 
 // Initialize theme on page load
-initThemeToggle();
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initThemeToggle);
+} else {
+    initThemeToggle();
+}
 
 // add javascript here
 
