@@ -74,5 +74,31 @@ let temp = "";
         playerName + " , correct";
 
         document.getElementById("guessBtn").disabled = true
+
+        totalWins++;
+        totalGuesses += guessCount;
+
+        scores.push(guessCount);
+        scores.sort(function(a,b) {
+            return a-b;
+        });
+    //display wins
+    document.getElementById("wins").textContent = totalWins;
+
+    //average score
+    let avg = totalGuesses / totalWins;
+    document.getElementById("avgScore").textContent = avg.toFixed(0);
+
+    //leaderboard
+    
+    let list = document.getElementsByName("leaderboard");
+
+    for (let i=0; i < list.length; i++) {
+if (scores[i] !== undefined) {
+    list[i].textContent = scores[i];
+} else {
+    list[i].textContent = "--";
+}
     }
+}
 })
