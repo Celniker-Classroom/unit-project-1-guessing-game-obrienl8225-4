@@ -165,4 +165,28 @@ document.getElementById("giveUpBtn").addEventListener("click", function() {
 
     document.getElementById("guessBtn").disabled = true;
     updateTimers();
+
+    function time() {
+        let now = new Date();
+        
+        let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        let month = months[now.getMonth()];
+        let day = now.getDate();
+        let year = now.getFullYear();
+        
+        let hours = now.getHours();
+        let minutes = now.getMinutes();
+        let seconds = now.getSeconds();
+        
+        if (minutes < 10) {
+            minutes = "0" + minutes;
+        }
+        if (seconds < 10) {
+            seconds = "0" + seconds;
+        }
+        
+        let timeString = month + " " + day + ", " + year + " " + hours + ":" + minutes + ":" + seconds;
+        
+        document.getElementById("time").textContent = timeString;
+    }
 });
