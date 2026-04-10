@@ -39,7 +39,14 @@ function updateDateTime() {
     let year = now.getFullYear();
     let suffix = getDaySuffix(day);
     
-    let dateString = month + " " + day + suffix + ", " + year;
+    let hours = now.getHours();
+    let minutes = now.getMinutes();
+    let seconds = now.getSeconds();
+    
+    if (minutes < 10) minutes = "0" + minutes;
+    if (seconds < 10) seconds = "0" + seconds;
+    
+    let dateString = month + " " + day + suffix + ", " + year + " " + hours + ":" + minutes + ":" + seconds;
     document.getElementById("date").textContent = dateString;
 }
 
@@ -149,6 +156,15 @@ document.getElementById("guessBtn").addEventListener("click", function() {
             } else {
                 list[i].textContent = "--";
             }
+        }
+
+        document.getElementById("giveUpBtn").disabled = true;
+        document.getElementById("playBtn").disabled = false;
+        
+        // Re-enable all radio buttons for next round
+        let radios = document.getElementsByName("level");
+        for (let i = 0; i < radios.length; i++) {
+            radios[i].disabled = false;
         }
 
         updateTimers();
